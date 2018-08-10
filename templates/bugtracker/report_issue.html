@@ -4,7 +4,11 @@
 	<title>Report issue</title>
 </head>
 <body>
-{% csrf_token %}
-{{form|linebreaksbr}}
+<form action="{%url 'bugtracker:report'%}" method="post">
+	{% csrf_token %}
+	{{form|linebreaksbr}}
+	<input type="submit" value="Submit" />	
+</form>
+
 </body>
 </html>
