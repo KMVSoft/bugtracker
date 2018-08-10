@@ -4,7 +4,6 @@ from django.forms import ModelForm
 class IssueArea(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
-# Create your models here.
 class IssueStatus(models.Model):
     name = models.CharField(max_length=30, unique=True)
 
@@ -30,3 +29,10 @@ class Issue(models.Model):
         IssueArea,
         on_delete=models.PROTECT)
 
+# FORMS
+
+class IssueForm(ModelForm):
+    class Meta:
+        model = Issue
+        fields = ['title', 'body', 'author_name',
+         'author_email', 'status', 'importance', 'area']
