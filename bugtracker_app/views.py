@@ -35,5 +35,11 @@ class ReportIssue(TemplateView):
 
 class NewMessagesList(ListView):
     template_name = APP_NAME+'/new_messages_list.html'
+
     def get_queryset(self):
         return mail_parser.get_unread_messages()
+
+    def get_context_data(self, **kwargs):
+    	ctx = super().get_context_data(**kwargs)
+    	ctx['issue_list'] = mail_parser.parse_messages(mail_parser.get_unread_messages())
+    	return ctx
