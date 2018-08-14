@@ -1,7 +1,7 @@
 from django.db import models
 from django.forms import ModelForm
 from django.utils.deconstruct import deconstructible
-
+from . import models_default_values as mdv
 class SingletonModel(models.Model):
 
     class Meta:
@@ -25,7 +25,7 @@ class IssueArea(models.Model):
     def __str__(self):
         return self.name
 
-
+@deconstructible()
 class IssueStatus(models.Model):
     name = models.CharField(max_length=30, unique=True)
 
@@ -67,13 +67,14 @@ class Issue(models.Model):
                                 shorten(self.body, width=128, placeholder='...'))
 
 class Setting(SingletonModel):
-    redmine_url = models.CharField(max_length=255, default='http://locahost:3000')
-    redmine_email = models.EmailField(default='example@exaple.ru')
+    redmine_url = models.CharField(max_length=255, default=mdv.redmine_url)
+    redmine_email = models.EmailField(default=mdv.redmine_email)
     redmine_api_access_key = models.CharField(max_length=100)
     imap_email_client_host = models.CharField(max_length=255)
-    imap_email_client_port = models.PositiveIntegerField(default=993)
+    imap_email_client_port = models.PositiveIntegerField(default=mdv.imap_port)
     email_login = models.CharField(max_length=255)
     email_password = models.CharField(max_length=255)
+    regex_to_parse_email = models.TextField(default=mdv.regex_email)
 
     def __str__(self):
         return 'Setting'
