@@ -1,5 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
+from django.utils.deconstruct import deconstructible
 
 class SingletonModel(models.Model):
 
@@ -24,11 +25,16 @@ class IssueArea(models.Model):
     def __str__(self):
         return self.name
 
+
 class IssueStatus(models.Model):
     name = models.CharField(max_length=30, unique=True)
 
     def __str__(self):
         return self.name
+
+    @classmethod
+    def get_default(cls):
+        return cls.objects.get_or_create(pk=1, name='new')
 
 class IssueImportance(models.Model):
     priority = models.PositiveSmallIntegerField(unique=True)
@@ -47,7 +53,8 @@ class Issue(models.Model):
     # FK
     status = models.ForeignKey(
         IssueStatus,
-        on_delete=models.PROTECT)
+        on_delete=models.PROTECT,
+        default=IssueStatus.get_default()[0])
     importance = models.ForeignKey(
         IssueImportance,
         on_delete=models.PROTECT)
@@ -55,14 +62,21 @@ class Issue(models.Model):
         IssueArea,
         on_delete=models.PROTECT)
 
+    def __str__(self):
+        return 'title: %s Descr: %s' % (self.title,
+                                shorten(self.body, width=128, placeholder='...'))
+
 class Setting(SingletonModel):
-    redmine_host = models.CharField(max_length=255)
-    redmine_port = models.CharField(max_length=255)
+    redmine_url = models.CharField(max_length=255, default='http://locahost:3000')
+    redmine_email = models.EmailField(default='example@exaple.ru')
     redmine_api_access_key = models.CharField(max_length=100)
     imap_email_client_host = models.CharField(max_length=255)
-    imap_email_client_port = models.PositiveIntegerField()
+    imap_email_client_port = models.PositiveIntegerField(default=993)
     email_login = models.CharField(max_length=255)
     email_password = models.CharField(max_length=255)
+
+    def __str__(self):
+        return 'Setting'
 
 # FORMS
 
