@@ -68,13 +68,14 @@ class Issue(models.Model):
 
 class Setting(SingletonModel):
     redmine_url = models.CharField(max_length=255, default=mdv.redmine_url)
-    redmine_email = models.EmailField(default=mdv.redmine_email)
     redmine_api_access_key = models.CharField(max_length=100)
-    imap_email_client_host = models.CharField(max_length=255)
-    imap_email_client_port = models.PositiveIntegerField(default=mdv.imap_port)
+    project_id = models.CharField(max_length=255)
+
+    smtp_email_client_host = models.CharField(default=mdv.smtp_host, max_length=200)
+    smtp_email_client_port = models.PositiveIntegerField(default=mdv.smtp_port)
+
     email_login = models.CharField(max_length=255)
     email_password = models.CharField(max_length=255)
-    regex_to_parse_email = models.TextField(default=mdv.regex_email)
 
     def __str__(self):
         return 'Setting'

@@ -1,4 +1,3 @@
-regex_email=r'-{40}.+Status: (?P<status>(?:\w+\s)+).+-{40}(?P<description>.+)-{2}'
-redmine_email = 'redmine@exaple.com'
-imap_port = 993
+smtp_host = 'smtp.gmail.com'
+smtp_port = 465
 redmine_url='http://locahost:3000'
