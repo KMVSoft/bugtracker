@@ -46,10 +46,11 @@ class IssueImportance(models.Model):
         return '%d - %s' % (self.priority, self.name)
 
 class Issue(models.Model):
-    subject = models.CharField(max_length=30)
+    subject = models.CharField(max_length=50)
     description = models.TextField()
-    author_email = models.EmailField()
     author_name = models.CharField(max_length=30)
+    author_email = models.EmailField()
+    notify_by_email = models.BooleanField(default=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now_add=True)
     # FK
@@ -88,4 +89,4 @@ class IssueForm(ModelForm):
     class Meta:
         model = Issue
         fields = ['subject', 'description', 'author_name',
-         'author_email', 'importance', 'area']
+         'author_email', 'notify_by_email', 'importance', 'area']
