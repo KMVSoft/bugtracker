@@ -10,18 +10,18 @@ def create_issue(project_id:str, subject:str, description:str, priority_id:int):
                 setting.redmine_url+'/issues.json',
                 json={
                     'issue': {
-                        "project_id": project_id,
                         "subject": subject,
                         "description": description,
-                        "priority_id": 4,
-                    }
+                        "priority_id": priority_id,
+                    },
+                    "project_id": project_id,
                 },
                 params={'key':setting.redmine_api_access_key}
             )
+	print('@@@###', r)
+
 	return r.json()
 
-def test_create():
-	return create_issue('the_matrix', 'The bug report', 'Here is description', 1)
 
 def get_issues_list():
 	r = requests.get(

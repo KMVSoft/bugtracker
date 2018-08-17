@@ -1,0 +1,68 @@
+/* Iconize 0.5 */
+
+/* extensions */
+
+a[href*=".doc"] {
+  padding: 5px 20px 5px 0;
+  background: transparent url("icons/icon_doc.gif") no-repeat center right;
+}
+
+a.txt {
+  padding: 5px 20px 5px 0;
+  background: transparent url("icons/icon_txt.gif") no-repeat center right;
+}
+
+a[href*=".xls"] {
+  padding: 5px 20px 5px 0;
+  background: transparent url("icons/icon_xls.gif") no-repeat center right;
+}
+
+
+a[href*=".pdf"]  { 
+  padding: 5px 20px 5px 0;
+  background: transparent url("icons/icon_pdf.gif") no-repeat center right;
+}
+
+a[href*=".ppt"] { 
+  padding: 5px 20px 5px 0;
+  background: transparent url("icons/icon_ppt.gif") no-repeat center right;
+}
+
+a[href*=".zip"] { 
+  padding: 5px 20px 5px 0;
+  background: transparent url("icons/icon_archive.gif") no-repeat center right;
+}
+
+a.feed { 
+  padding: 5px 20px 5px 0;
+  background: transparent url("icons/icon_feed.gif") no-repeat center right;
+}
+
+a.impdoc{ 
+  padding: 5px 20px 5px 0;
+  background: transparent url("icons/icon_pdf.gif") no-repeat center right;
+}
+
+a[target*="_blank"]{ 
+  padding: 5px 20px 5px 0;
+  background: transparent url("icons/icon_external.gif") no-repeat center right;
+}
+
+/* email */
+a[href^="mailto:"] {
+  padding: 5px 20px 5px 0;
+  background: transparent url("icons/icon_mailto.gif") no-repeat center right;
+}
+
+a.forward {
+  line-height: normal;
+  padding-right: 7px;  
+  background: transparent url("icons/icon_forward.gif") no-repeat center right;
+}
+
+.noicon{
+  padding: 0px !important;
+  background-image:none !important;
+  background-repeat:no-repeat;
+  background-position:inherit;
+}

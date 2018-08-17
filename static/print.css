@@ -1,0 +1,38 @@
+body {
+    background-image: none;
+    background-color: white;
+    font-family: arial, sans-serif;
+    font-size: 12px;
+    color: black;
+}
+
+tr#logoline,
+tr#topline,
+tr#footerline,
+td#footercell,
+ul#menu, 
+td#menutd,
+td#centertd,
+div#pagelinks {
+    display:none !important;
+}
+
+td#contenttd {
+    width: 100% !important;
+}
+
+div.linkholder {
+    display:none !important;	
+}
+
+div.rightblock {
+    display:none !important;	
+}
+
+td#hidden {
+    display:none !important;	
+}
+
+td.hidden {
+    display:none !important;	
+}

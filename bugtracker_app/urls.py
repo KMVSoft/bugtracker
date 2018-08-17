@@ -17,10 +17,12 @@ from django.contrib import admin
 from django.urls import path
 from .views import ReportIssue
 from .views import NewMessagesList
+from .views import Index
 
 app_name = 'bugtracker'
 
 urlpatterns = [
     path('report/', ReportIssue.as_view(), name='report'),
     path('mail/', NewMessagesList.as_view(), name='mail'),
+    path('index/', Index.as_view(), name='index'),
 ]
