@@ -2,6 +2,7 @@ from django.db import models
 from django.forms import ModelForm
 from django.utils.deconstruct import deconstructible
 from textwrap import shorten
+
 from . import models_default_values as mdv
 class SingletonModel(models.Model):
 
@@ -35,7 +36,7 @@ class IssueStatus(models.Model):
 
     @classmethod
     def get_default(cls):
-        return cls.objects.get_or_create(pk=1, name='new')
+        return cls.objects.get_or_create(pk=1, name=mdv.status_name)
 
 class IssueImportance(models.Model):
     priority = models.PositiveSmallIntegerField(unique=True)
@@ -64,8 +65,8 @@ class Issue(models.Model):
         on_delete=models.PROTECT)
 
     def __str__(self):
-        return 'Sub: %s Desc: %s' % (self.subject,
-                             shorten(self.description, width=128, placeholder='...'))
+        return 'Subject: %s Descr: %s' % (self.subject,
+                                shorten(self.description, width=128, placeholder='...'))
 
 class Setting(SingletonModel):
     redmine_url = models.CharField(max_length=255, default=mdv.redmine_url)
@@ -87,4 +88,4 @@ class IssueForm(ModelForm):
     class Meta:
         model = Issue
         fields = ['subject', 'description', 'author_name',
-         'author_email', 'status', 'importance', 'area']
+         'author_email', 'importance', 'area']
