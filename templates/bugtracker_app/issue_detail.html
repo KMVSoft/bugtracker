@@ -21,6 +21,11 @@
         <div class="panel-body">
     		<h4><b>Тема:</b> {{issue.subject}}</h4>
     		<h4><b>Описание:</b> {{issue.description}}</h4>
+    		<h4><b>Статус:</b> 
+    			<span class="label label-{{issue.status.name|css_by_issue_status}}">
+    				{{ issue.status.name }}
+    			</span>
+			</h4>
     		<h4><b>Место возникновения:</b> {{issue.area.name}}</h4>
     		<h4><b>Важность:</b> {{issue.importance.name}}</h4>
     		<hr>
