@@ -13,3 +13,14 @@ def addattrs(value, args):
     arg_list = [arg.strip() for arg in args.split(',')]
     attrs = {arg.split('=')[0]:arg.split('=')[1] for arg in arg_list}   
     return value.as_widget(attrs=attrs)
+
+@register.filter(name='css_by_issue_status')
+def css_by_issue_status(issue_status):
+    css_class = 'default'
+    if issue_status == 'отклонена':
+        css_class = 'danger'
+    elif issue_status == 'в работе':
+        css_class = 'warning'
+    elif issue_status == 'решена':
+        css_class = 'success'
+    return css_class

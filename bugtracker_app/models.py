@@ -2,8 +2,10 @@ from django.db import models
 from django.forms import ModelForm
 from django.utils.deconstruct import deconstructible
 from textwrap import shorten
+from django.urls import reverse
 
 from . import models_default_values as mdv
+
 class SingletonModel(models.Model):
 
     class Meta:
@@ -68,6 +70,9 @@ class Issue(models.Model):
     def __str__(self):
         return 'Subject: %s Descr: %s' % (self.subject,
                                 shorten(self.description, width=128, placeholder='...'))
+
+    def get_absolute_url(self):
+        return reverse('bugtracker:issue_detail', args=(self.id,))
 
 class Setting(SingletonModel):
     redmine_url = models.CharField(max_length=255, default=mdv.redmine_url)

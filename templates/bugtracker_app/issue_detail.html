@@ -1,0 +1,45 @@
+{% load myfilters %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Issue Detail</title>
+    <!-- Bootrstrap 3.3.7 CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+<body>
+<hr>
+<div class="container">
+  <div class="row">
+  
+    <!-- PANEL ISSUE DETAIL  -->
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-{{issue.status.name|css_by_issue_status}}">
+        <div class="panel-heading">
+        	<h3>Ошибка №{{issue.pk}}</h3>
+        </div>
+        <div class="panel-body">
+    		<h4><b>Тема:</b> {{issue.subject}}</h4>
+    		<h4><b>Описание:</b> {{issue.description}}</h4>
+    		<h4><b>Место возникновения:</b> {{issue.area.name}}</h4>
+    		<h4><b>Важность:</b> {{issue.importance.name}}</h4>
+    		<hr>
+    		<h4><b>Имя заявителя ошибки:</b> {{issue.author_name}}</h4>
+    		<h4><b>Email заявителя ошибки:</b> {{issue.author_email}}</h4>
+
+        </div>
+      </div>
+    </div>
+    <!-- END PANEL ISSUE DETAIL -->
+
+
+
+  </div>
+</div>
+
+
+
+</body>
+</html>
+
+

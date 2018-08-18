@@ -2,6 +2,7 @@ import requests
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.views.generic import ListView
+from django.views.generic import DetailView
 from bugtracker_app.models import IssueForm
 from bugtracker_app.models import Setting
 from bugtracker_app.models import Issue
@@ -11,7 +12,7 @@ from . import redmine
 from . import utils
 
 
-APP_NAME = 'bugtracker'
+APP_NAME = 'bugtracker_app'
 setting = Setting.load()
 
 class Index(TemplateView):
@@ -37,7 +38,7 @@ class Index(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['form'] = IssueForm()
-        # FIXIT HARDCODING
+        # FIXIT HARDCODING status__name
         ctx['in_progress'] = Issue.objects.filter(status__name='в работе')
         ctx['solved'] = Issue.objects.filter(status__name='решена')
         return ctx
@@ -48,3 +49,6 @@ class UpdateStatus(TemplateView):
     def post(self, request):
         utils.update_issues()
         return self.get(request)
+
+class IssueDetail(DetailView):
+    model = Issue
