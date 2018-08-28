@@ -23,6 +23,12 @@ class SingletonModel(models.Model):
         obj, created = cls.objects.get_or_create(pk=1)
         return obj
 
+class IssueCategory(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name        
+
 class IssueArea(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
@@ -66,6 +72,10 @@ class Issue(models.Model):
     area = models.ForeignKey(
         IssueArea,
         on_delete=models.PROTECT)
+    category = models.ForeignKey(
+        IssueCategory,
+        on_delete=models.PROTECT,
+        default=0)
 
     def __str__(self):
         return 'Subject: %s Descr: %s' % (self.subject,
@@ -78,6 +88,10 @@ class Setting(SingletonModel):
     redmine_url = models.CharField(max_length=255, default=mdv.redmine_url)
     redmine_api_access_key = models.CharField(max_length=100)
     project_id = models.CharField(max_length=255)
+    redmine_sync_every_mins = models.PositiveSmallIntegerField(
+        default=720,
+        help_text='Как часто будет происходить синхронизация с redmine'
+    )
 
     smtp_email_client_host = models.CharField(default=mdv.smtp_host, max_length=200)
     smtp_email_client_port = models.PositiveIntegerField(default=mdv.smtp_port)
@@ -93,5 +107,5 @@ class Setting(SingletonModel):
 class IssueForm(ModelForm):
     class Meta:
         model = Issue
-        fields = ['subject', 'description', 'author_name',
+        fields = ['subject', 'description', 'author_name', 'category',
          'author_email', 'notify_by_email', 'importance', 'area']

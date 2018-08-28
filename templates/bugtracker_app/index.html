@@ -35,21 +35,10 @@
               <label for="id_description">Описание</label>
               {{ form.description|addattrs:'class=form-control, placeholder=Подробно опишите возникшую ошибку'}} 
             </div>
-            <!-- NAME -->
+            <!-- CATEGORY -->
             <div class="form-group">
-              <label for="id_author_name">Ваше имя</label>
-              {{ form.author_name|addattrs:'class=form-control, placeholder=Введите Ваше имя'}} 
-            </div>
-            <!-- EMAIL -->
-            <div class="form-group">
-              <label for="id_author_email">Ваш email</label>
-              {{ form.author_email|addattrs:'class=form-control, placeholder=Введите Ваш email'}}
-              <small class="form-text text-muted">Для обратной связи с Вами</small>
-            </div>
-            <!-- NOTIFY BY EMAIL -->
-            <div class="form-check">
-              {{ form.notify_by_email|addclass:'form-check-input' }}
-              <label class="form-check-label" for="id_notify_by_email">Уведомлять меня о статусе ошибки по email</label>
+              <label for="id_category">Категория ошибки</label>
+              {{ form.category|addclass:'form-control' }} 
             </div>
             <!-- AREA AND IMPORTANCE -->
             <div class="form-group">  
@@ -66,6 +55,23 @@
                 </div>
               </div>
             </div>
+            <!-- NAME -->
+            <div class="form-group">
+              <label for="id_author_name">Ваше имя</label>
+              {{ form.author_name|addattrs:'class=form-control, placeholder=Введите Ваше имя'}} 
+            </div>
+            <!-- EMAIL -->
+            <div class="form-group">
+              <label for="id_author_email">Ваш email</label>
+              {{ form.author_email|addattrs:'class=form-control, placeholder=Введите Ваш email'}}
+              <small class="form-text text-muted">Для обратной связи с Вами</small>
+            </div>
+            <!-- NOTIFY BY EMAIL -->
+            <div class="form-check">
+              {{ form.notify_by_email|addclass:'form-check-input' }}
+              <label class="form-check-label" for="id_notify_by_email">Уведомлять меня о статусе ошибки по email</label>
+            </div>
+            <hr>
             <!-- SUBMIT -->
             <button type="submit" class="btn btn-primary">Отправить</button>
           </form>
