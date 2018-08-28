@@ -1,8 +1,13 @@
+import uuid
+
 from django.db import models
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from django.utils.deconstruct import deconstructible
 from textwrap import shorten
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 from . import models_default_values as mdv
 
@@ -96,8 +101,13 @@ class Setting(SingletonModel):
     smtp_email_client_host = models.CharField(default=mdv.smtp_host, max_length=200)
     smtp_email_client_port = models.PositiveIntegerField(default=mdv.smtp_port)
 
+    imap_email_client_host = models.CharField(default=mdv.smtp_host, max_length=200)
+    imap_email_client_port = models.PositiveIntegerField(default=mdv.smtp_port)
+
     email_login = models.CharField(max_length=255)
     email_password = models.CharField(max_length=255)
+
+    api_key = models.UUIDField(default=uuid.uuid4, editable=False)
 
     def __str__(self):
         return 'Setting'
@@ -109,3 +119,11 @@ class IssueForm(ModelForm):
         model = Issue
         fields = ['subject', 'description', 'author_name', 'category',
          'author_email', 'notify_by_email', 'importance', 'area']
+
+class RegisterForm(UserCreationForm):
+    first_name = forms.CharField(max_length=30, required=True)
+    email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'email', 'password1', 'password2', )

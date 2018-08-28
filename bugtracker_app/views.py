@@ -1,9 +1,14 @@
 import requests
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
+from django.contrib.auth import login, authenticate
 from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.views.generic import DetailView
+from django.views.generic import View
+
 from bugtracker_app.models import IssueForm
+from bugtracker_app.models import RegisterForm
 from bugtracker_app.models import Setting
 from bugtracker_app.models import Issue
 
@@ -52,3 +57,25 @@ class UpdateStatus(TemplateView):
 
 class IssueDetail(DetailView):
     model = Issue
+
+class NoteAPI(View):
+    def post(self, request):
+        pass
+
+class RegisterView(TemplateView):
+    template_name = 'registration/register.html'
+    def post(self, request):
+        form = RegisterView(request.POST)
+        if form.is_valid():
+            user_model = form.save()
+            user = authenticate(
+                username=user_model.username,
+                password=user_model.password
+            )
+            login(request, user)
+            return redirect('bugtracker:index')
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['form'] = RegisterForm()
+        return ctx

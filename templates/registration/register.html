@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Регистрация</title>
+    <!-- Bootrstrap 3.3.7 CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+<body>
+
+
+<hr>
+<div class="container">
+  <div class="row">
+  
+    <!-- PANEL REGISTER -->
+    <div class="col-md-4 col-md-offset-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3>Регистрация</h3>
+        </div>
+        <div class="panel-body">
+          {% load myfilters %}
+          <!-- FORM REGISTER -->
+          <form action="{%url 'bugtracker:index'%}" method="post">
+            {% csrf_token %}
+
+
+            <!-- USERNAME -->
+            <div class="form-group">
+              <label for="id_username">Имя пользователя</label>
+              {{ form.username|addattrs:'class=form-control, placeholder=Имя пользователя' }}
+            </div>
+            <!-- NAME -->
+            <div class="form-group">
+              <label for="id_username">Ваше настоящее имя</label>
+              {{ form.first_name|addattrs:'class=form-control, placeholder=Настоящее имя' }}
+            </div>
+            <!-- EMAIL -->
+            <div class="form-group">
+              <label for="id_username">Имя пользователя</label>
+              {{ form.username|addattrs:'class=form-control, placeholder=Ваш email' }}
+              <small class="form-text text-muted">На эту почту мы будем прислыть уведомления о статусе ваших заявок</small>
+            </div>
+            <!-- PASSWORD -->
+            <div class="form-group">
+              <label for="id_password">Пароль</label>
+              {{ form.password1|addattrs:'class=form-control'}} 
+            </div>
+            <!-- PASSWORD REPEAT-->
+            <div class="form-group">
+              <label for="id_password">Введите пароль снова</label>
+              {{ form.password1|addattrs:'class=form-control'}} 
+            </div>
+            <a href="{%url 'login'%}">Уже зарегистрированы?</a>
+            <hr>
+            <!-- SUBMIT -->
+            <button type="submit" class="btn btn-primary">Войти!</button>
+          </form>
+          <!-- END FORM REGISTER -->        
+        </div>
+      </div>
+    </div>
+    <!-- END PANEL REGISTER -->    
+
+  </div>
+</div>
+
+</body>
+</html>
