@@ -18,6 +18,8 @@ from . import utils
 
 
 APP_NAME = 'bugtracker_app'
+
+# Pfuh
 setting = Setting.load()
 
 class Index(TemplateView):
