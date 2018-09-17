@@ -19,7 +19,7 @@ from . import utils
 
 APP_NAME = 'bugtracker_app'
 
-# Pfuh
+# Загружаем настройки
 setting = Setting.load()
 
 class Index(TemplateView):
