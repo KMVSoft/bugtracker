@@ -1,3 +1,5 @@
+import json
+
 import requests
 from django.shortcuts import render, redirect
 
@@ -7,10 +9,16 @@ from django.views.generic import ListView
 from django.views.generic import DetailView
 from django.views.generic import View
 
+from django.http import HttpResponseBadRequest
+from django.http import HttpResponseForbidden
+from django.http import HttpResponse
+
+
 from bugtracker_app.models import IssueForm
 from bugtracker_app.models import RegisterForm
 from bugtracker_app.models import Setting
 from bugtracker_app.models import Issue
+from bugtracker_app.models import IssueComment
 
 from . import email_utils
 from . import redmine
@@ -63,7 +71,20 @@ class IssueDetail(DetailView):
 
 class NoteAPI(CSRFExemptMixin, View):
     def post(self, request):
-        pass
+        api_key = str(setting.api_key).replace('-','')
+        http_auth = request.META['HTTP_AUTHORIZATION']
+
+        if http_auth != api_key:     
+            return HttpResponseForbidden('api_key is not valid')
+
+        data = json.loads(request.body.decode('utf-8'))
+        try:
+            IssueComment.objects.create(is_staff=True, **data)
+        except Exception as e:
+            return HttpResponseBadRequest(
+                content='Error when processing creation comment '+str(e)
+            )
+        return HttpResponse('OK')
 
 class RegisterView(TemplateView):
     template_name = 'registration/register.html'

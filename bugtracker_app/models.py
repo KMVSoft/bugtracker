@@ -114,6 +114,9 @@ class IssueComment(models.Model):
         Issue,
         on_delete=models.PROTECT)
 
+    def __str__(self):
+        return 'From: %s Content: %s' % (from_username, content)
+
 
 
 class Setting(SingletonModel):
@@ -134,7 +137,7 @@ class Setting(SingletonModel):
     email_login = models.CharField(max_length=255)
     email_password = models.CharField(max_length=255)
 
-    api_key = models.UUIDField(default=uuid.uuid4)
+    api_key = models.UUIDField(default=uuid.uuid4, blank=False)
 
     def __str__(self):
         return 'Setting'
