@@ -15,6 +15,7 @@ from bugtracker_app.models import Issue
 from . import email_utils
 from . import redmine
 from . import utils
+from .mymixins import CSRFExemptMixin
 
 
 APP_NAME = 'bugtracker_app'
@@ -60,7 +61,7 @@ class UpdateStatus(TemplateView):
 class IssueDetail(DetailView):
     model = Issue
 
-class NoteAPI(View):
+class NoteAPI(CSRFExemptMixin, View):
     def post(self, request):
         pass
 

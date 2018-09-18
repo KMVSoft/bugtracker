@@ -103,15 +103,18 @@ class Issue(models.Model):
     def get_absolute_url(self):
         return reverse('bugtracker:issue_detail', args=(self.id,))
 
+
 class IssueComment(models.Model):
     content = models.TextField()
-    support_user = models.CharField(max_length=255, null=True, blank=True)
-    end_user_email = models.EmailField(null=True, blank=True)
-    created_date = models.DateTimeField()
+    from_username = models.CharField(max_length=255, null=True, blank=True)
+    is_staff = models.BooleanField(default=False)
+    created_date = models.DateTimeField(auto_now_add=True)
     # FK
     issue = models.ForeignKey(
         Issue,
         on_delete=models.PROTECT)
+
+
 
 class Setting(SingletonModel):
     #REDMINE SETTINGS 
