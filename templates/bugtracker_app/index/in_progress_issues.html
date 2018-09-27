@@ -1,0 +1,28 @@
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h4>В работе</h4>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped table-hover">
+      <thead style="font-weight: bold">
+        <tr>
+          <td>#</td>
+          <td>Тема</td>
+          <td>Описание</td>
+        </tr>
+      </thead>
+      <tbody>
+        {%for issue in in_progress%}
+        <tr onclick="window.location='{{issue.get_absolute_url}}';">
+          <td>{{issue.id}}</td>
+          <td>{{issue.subject}}</td>
+          <td>{{issue.description}}</td>
+        </tr>
+        {%endfor%}  
+      </tbody>
+    </table>
+  </div>
+  <div class="panel-footer">
+    <a href="" class="btn btn-warning">Показать все</a>
+  </div>
+</div>

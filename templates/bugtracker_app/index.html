@@ -1,152 +1,31 @@
 {% extends "bugtracker_app/base.html" %}
 
-{% block title %}Заявить об ошибке {% endblock %}
+{% block title %} Заявить об ошибке {% endblock %}
 
 {% block content %}
 <div class="container">
+
   <div class="row">
-  
-    <!-- PANEL REPORT BUG -->
     <div class="col-md-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3>Заявить о ошибке</h3>
-        </div>
-        <div class="panel-body">
-          {% load myfilters %}
-          <!-- FORM REPORT BUG -->
-          <form action="{%url 'bugtracker:index'%}" method="post">
-            {% csrf_token %}
-            <!-- SUBJECT -->
-            <div class="form-group">
-              <label for="id_subject">Заголовок</label>
-              {{ form.subject|addattrs:'class=form-control, placeholder=Введите заголовок'}}       
-              <small class="form-text text-muted">Кратко озаглавьте найденную ошибку</small>
-            </div>
-            <!-- DESCRIPTION -->
-            <div class="form-group">
-              <label for="id_description">Описание</label>
-              {{ form.description|addattrs:'class=form-control, placeholder=Подробно опишите возникшую ошибку'}} 
-            </div>
-            <!-- CATEGORY -->
-            <div class="form-group">
-              <label for="id_category">Категория ошибки</label>
-              {{ form.category|addclass:'form-control' }} 
-            </div>
-            <!-- AREA AND IMPORTANCE -->
-            <div class="form-group">  
-              <div class="row">
-                <!-- AREA -->
-                <div class="col-md-6">
-                  <label for="id_area">Где произошла ошибка?</label>
-                  {{ form.area|addclass:'form-control' }} 
-                </div>
-                <!-- IMPORTANCE -->
-                <div class="col-md-6">
-                  <label for="id_importance">Оцените важность ошибки</label>
-                  {{ form.importance|addclass:'form-control' }} 
-                </div>
-              </div>
-            </div>
-            <!-- FOR ANONYMOUS USER -->
-            {% if not user.is_authenticated %}
-            <!-- NAME -->
-            <div class="form-group">
-              <label for="id_author_name">Ваше имя</label>
-              {{ form.author_name|addattrs:'class=form-control, placeholder=Введите Ваше имя'}} 
-            </div>
-            <!-- EMAIL -->
-            <div class="form-group">
-              <label for="id_author_email">Ваш email</label>
-              {{ form.author_email|addattrs:'class=form-control, placeholder=Введите Ваш email'}}
-              <small class="form-text text-muted">Для обратной связи с Вами</small>
-            </div>
-            {%endif%}
-            <!-- NOTIFY BY EMAIL -->
-            <div class="form-check">
-              {{ form.notify_by_email|addclass:'form-check-input' }}
-              <label class="form-check-label" for="id_notify_by_email">Уведомлять меня о статусе ошибки по email</label>
-            </div>
-            <hr>
-            <!-- SUBMIT -->
-            <button type="submit" class="btn btn-primary">Отправить</button>
-          </form>
-          <!-- END FORM REPORT BUG -->        
-        </div>
-      </div>
+      {% include 'bugtracker_app/index/form_report_bug.html'%}
     </div>
-    <!-- END PANEL REPORT BUG -->
-
-    <!-- IN PROGRESS -->
-    <div class="col-sm-12"> 
-    <hr>
-      <div class="panel panel-warning">
-        <div class="panel-heading">
-          <h4>В работе</h4>
-        </div>
-        <div class="panel-body">
-          <table class="table table-striped table-hover">
-            <thead style="font-weight: bold">
-              <tr>
-                <td>#</td>
-                <td>Тема</td>
-                <td>Описание</td>
-              </tr>
-            </thead>
-            <tbody>
-              {%for issue in in_progress%}
-              <tr onclick="window.location='{{issue.get_absolute_url}}';">
-                <td>{{issue.id}}</td>
-                <td>{{issue.subject}}</td>
-                <td>{{issue.description}}</td>
-              </tr>
-              {%endfor%}  
-            </tbody>
-          </table>
-        </div>
-        <div class="panel-footer">
-          <a href="" class="btn btn-warning">Показать все</a>
-        </div>
-      </div>
-    </div>
-    <!-- END IN PROGRESS  -->
-
-    <!-- SOLVED -->
-    <div class="col-sm-12">
-    <hr>
-      <div class="panel panel-success">
-        <div class="panel-heading">
-          <h4>Решены</h4>
-        </div>
-        <div class="panel-body">
-          <table class="table table-striped table-hover">
-            <thead style="font-weight: bold">
-              <tr>
-                <td>#</td>
-                <td>Тема</td>
-                <td>Описание</td>
-              </tr>
-            </thead>
-            <tbody>
-              {%for issue in solved%}
-              <tr onclick="window.location='{{issue.get_absolute_url}}';">
-                <td>{{issue.id}}</td>
-                <td>{{issue.subject}}</td>
-                <td>{{issue.description}}</td>
-              </tr>
-              {%endfor%}  
-            </tbody>
-
-          </table>
-        </div>
-        <div class="panel-footer">
-          <a href="" class="btn btn-success">Показать все</a>
-        </div>
-      </div>
-    </div>
-    <!-- END SOLVED  -->      
-
   </div>
+  
+  <hr>
+  <div class="row">
+    <div class="col-sm-12"> 
+
+      {% include 'bugtracker_app/index/in_progress_issues.html'%}
+    </div>
+  </div>
+
+  <hr>
+  <div class="row">    
+    <div class="col-sm-12">
+      {% include 'bugtracker_app/index/solved_issues.html'%}
+    </div>    
+  </div>
+
 </div>
 {% endblock %}
 

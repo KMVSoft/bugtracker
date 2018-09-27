@@ -46,15 +46,7 @@ class Index(TemplateView):
                 issue.author_email = request.user.email
                 issue.author = request.user
 
-            r = redmine.create_issue(
-                setting.project_id,
-                issue.subject,
-                issue.description,
-                issue.author_name,
-                issue.author_email,
-                issue.area.name,
-                issue.importance.priority
-            )
+            r = redmine.create_issue(issue)
             issue.id = r['issue']['id']
             issue.save()
             return self.get(request)
@@ -126,8 +118,6 @@ class NoteAPI(CSRFExemptMixin, View):
             )
         return HttpResponse('OK')
 
-
-
 class RegisterView(TemplateView):
     template_name = 'registration/register.html'
     def post(self, request):
@@ -144,4 +134,29 @@ class RegisterView(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['form'] = RegisterForm()
+        return ctx
+
+class SolvedIssuesView(ListView):
+    paginate_by = 10
+    template_name = APP_NAME+'/solved_issues.html'
+
+    def get_queryset(self):
+        return Issue.objects.filter(status__name='решена')
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['page_solved'] = 'active' # for css class BS 3
+        return ctx
+
+
+class InProgressIssuesView(ListView):
+    paginate_by = 10
+    template_name = APP_NAME+'/in_progress_issues.html'
+
+    def get_queryset(self):
+        return Issue.objects.filter(status__name='в работе')
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['page_in_progress'] = 'active' # for css class BS 3
         return ctx

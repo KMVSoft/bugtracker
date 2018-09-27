@@ -1,0 +1,39 @@
+{%extends 'bugtracker_app/base.html'%}
+
+{% block content%}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-{% block panel_class %}default{%endblock%}">
+        <div class="panel-heading">
+          <h4>{% block list_title %} {% endblock %}</h4>
+        </div>
+        <div class="body">
+          <table class="table table-striped table-hover">
+            <thead style="font-weight: bold">
+              <tr>
+                <td>#</td>
+                <td>Тема</td>
+                <td>Описание</td>
+              </tr>
+            </thead>
+            <tbody>
+              {%for issue in object_list%}
+              <tr onclick="window.location='{{issue.get_absolute_url}}';">
+                <td>{{issue.id}}</td>
+                <td>{{issue.subject}}</td>
+                <td>{{issue.description|truncatewords:50}}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="3"> Тут ничего нет </td>
+              </tr>
+              {%endfor%}  
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock%}

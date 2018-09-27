@@ -4,9 +4,15 @@
       <a class="navbar-brand" href="{%url 'bugtracker:index'%}">Россельхознадзор</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="{{page_report}}"><a href="{% url 'bugtracker:index'%}">Заявить</a></li>
-      <li class="{{page_in_progress}}"><a href="#">В работе</a></li>
-      <li class="{{page_solved}}"><a href="#">Решённые</a></li>
+      <li class="{{page_report}}">
+        <a href="{% url 'bugtracker:index'%}">Заявить</a>
+      </li>
+      <li class="{{page_in_progress}}">
+        <a href="{% url 'bugtracker:in_progress_issues' %}">В работе</a>
+      </li>
+      <li class="{{page_solved}}">
+        <a href="{% url 'bugtracker:solved_issues' %}">Решённые</a>
+      </li>
       {% if user.is_authenticated %}
       <li class="{{page_profile}}">
         <a href="{% url 'bugtracker:profile' user.id %}">
