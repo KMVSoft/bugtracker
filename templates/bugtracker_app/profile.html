@@ -1,0 +1,18 @@
+{% extends 'bugtracker_app/base.html'%}
+
+{% block title %}
+Профиль {{user.first_name}}
+{% endblock%}
+
+{% block content%}
+<div class="container">
+   <div class="row">
+      <div class="col-md-4">
+         {% include 'bugtracker_app/profile/profile_info.html' %}
+      </div>
+      <div class="col-md-8">
+         {% include 'bugtracker_app/profile/profile_issues.html' %}
+      </div>
+   </div>
+</div>
+{% endblock %}

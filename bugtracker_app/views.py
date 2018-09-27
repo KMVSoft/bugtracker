@@ -3,7 +3,11 @@ import json
 import requests
 from django.shortcuts import render, redirect
 
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.views.generic import DetailView
@@ -38,6 +42,11 @@ class Index(TemplateView):
         form = IssueForm(request.POST)
         if form.is_valid():
             issue = form.save(commit=False)
+            if request.user.is_authenticated:
+                issue.author_name = request.user.first_name
+                issue.author_email = request.user.email
+                issue.author = request.user
+
             r = redmine.create_issue(
                 setting.project_id,
                 issue.subject,
@@ -54,6 +63,7 @@ class Index(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['form'] = IssueForm()
+        ctx['page_report'] = 'active' #for bs 3 navbar
         # FIXIT HARDCODING status__name
         ctx['in_progress'] = Issue.objects.filter(status__name='в работе')
         ctx['solved'] = Issue.objects.filter(status__name='решена')
@@ -68,6 +78,24 @@ class UpdateStatus(TemplateView):
 
 class IssueDetail(DetailView):
     model = Issue
+
+class ProfileView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = APP_NAME+'/profile.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['page_profile'] = 'active' #css class for BS 3 navbar
+        # FIXIT HARDCODING status__name
+        ctx['new'] = Issue.objects.filter(
+            status__name='новая',
+            author=self.request.user)
+        ctx['in_progress'] = Issue.objects.filter(
+            status__name='в работе')
+        ctx['solved'] = Issue.objects.filter(
+            status__name='решена',
+            author=self.request.user)
+        return ctx
 
 class NoteAPI(CSRFExemptMixin, View):
     def post(self, request):

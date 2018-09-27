@@ -112,10 +112,12 @@ class IssueComment(models.Model):
     # FK
     issue = models.ForeignKey(
         Issue,
-        on_delete=models.PROTECT)
+        on_delete=models.PROTECT,
+        related_name="comments"
+    )
 
     def __str__(self):
-        return 'From: %s Content: %s' % (from_username, content)
+        return 'From: %s Content: %s' % (self.from_username, self.content)
 
 
 

@@ -6,6 +6,7 @@ from .views import UpdateStatus
 from .views import IssueDetail
 from .views import RegisterView
 from .views import NoteAPI
+from .views import ProfileView
 
 app_name ='bugtracker'
 
@@ -15,4 +16,5 @@ urlpatterns = [
     path('api/note', NoteAPI.as_view(), name='note_api'),
     path('issue/<int:pk>', IssueDetail.as_view(), name='issue_detail'),
     path('register/', RegisterView.as_view(), name='register'),
+    path('profile/<int:pk>', ProfileView.as_view(), name='profile'),
 ]

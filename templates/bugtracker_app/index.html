@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Index</title>
-    <!-- Bootrstrap 3.3.7 CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+{% extends "bugtracker_app/base.html" %}
 
-</head>
-<body>
+{% block title %}Заявить об ошибке {% endblock %}
 
-
-<hr>
+{% block content %}
 <div class="container">
   <div class="row">
   
@@ -55,6 +48,8 @@
                 </div>
               </div>
             </div>
+            <!-- FOR ANONYMOUS USER -->
+            {% if not user.is_authenticated %}
             <!-- NAME -->
             <div class="form-group">
               <label for="id_author_name">Ваше имя</label>
@@ -66,6 +61,7 @@
               {{ form.author_email|addattrs:'class=form-control, placeholder=Введите Ваш email'}}
               <small class="form-text text-muted">Для обратной связи с Вами</small>
             </div>
+            {%endif%}
             <!-- NOTIFY BY EMAIL -->
             <div class="form-check">
               {{ form.notify_by_email|addclass:'form-check-input' }}
@@ -152,10 +148,6 @@
 
   </div>
 </div>
-
-
-
-</body>
-</html>
+{% endblock %}
 
 

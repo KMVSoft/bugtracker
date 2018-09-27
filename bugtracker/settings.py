@@ -138,3 +138,6 @@ CRON_CLASSES = [
     "bugtracker_app.periodic_tasks.Test",
     # ...
 ]
+
+LOGOUT_REDIRECT_URL = 'bugtracker:index'
+LOGIN_REDIRECT_URL = 'bugtracker:index'

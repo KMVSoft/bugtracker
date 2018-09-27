@@ -22,7 +22,7 @@
         <div class="panel-body">
           {% load myfilters %}
           <!-- FORM SING IN -->
-          <form action="{%url 'bugtracker:register'%}" method="post">
+          <form action="{%url 'login'%}" method="post">
             {% csrf_token %}
 
             <!-- USERNAME -->

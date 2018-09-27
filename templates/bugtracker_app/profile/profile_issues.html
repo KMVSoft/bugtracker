@@ -1,0 +1,81 @@
+<div class="panel panel-default">
+  <div class="panel-heading">Ваши заявления об ошибках</div>
+  <div class="panel-body">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#new">Новые</a></li>
+      <li><a data-toggle="tab" href="#in_progress">В работе</a></li>
+      <li><a data-toggle="tab" href="#solved">Решённые</a></li>
+      <li><a data-toggle="tab" href="#menu3">Отклоннёные</a></li>
+      <li><a data-toggle="tab" href="#comments">Комментарии</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <!-- NEW ISSUE  -->
+      <div id="new" class="tab-pane fade in active">
+        <table class="table table-hover">
+          <thead class="info">
+            <td>ID</td>
+            <td>Тема</td>
+            <td>Описание</td>
+          </thead>
+          {% for issue in new %}
+            <tr class="info" onclick="window.location='{{issue.get_absolute_url}}';">
+              <td>{{issue.id}}</td>
+              <td>{{issue.subject}}</td>
+              <td>{{issue.description|truncatewords:10}}</td>
+            </tr>
+          {% empty %}
+          <td colspan="3">Нет заявок</td>
+          {% endfor %}
+        </table>
+      </div>
+      <!-- IN_PROGRESS ISSUE  -->
+      <div id="in_progress" class="tab-pane fade">
+        <table class="table table-striped table-hover">
+          <thead>
+            <td>ID</td>
+            <td>Тема</td>
+            <td>Описание</td>
+          </thead>
+          {% for issue in in_progress %}
+            <tr class="warning" onclick="window.location='{{issue.get_absolute_url}}';">
+              <td>{{issue.id}}</td>
+              <td>{{issue.subject}}</td>
+              <td>{{issue.description|truncatewords:10}}</td>
+            </tr>
+          {% empty %}
+          <td colspan="3">Нет заявок</td>
+          {% endfor %}
+        </table>
+      </div>
+      <!-- SOLVED ISSUE -->
+      <div id="solved" class="tab-pane fade">
+        <table class="table table-striped table-hover">
+          <thead>
+            <td>ID</td>
+            <td>Тема</td>
+            <td>Описание</td>
+          </thead>
+          {% for issue in solved %}
+            <tr class="success" onclick="window.location='{{issue.get_absolute_url}}';">
+              <td>{{issue.id}}</td>
+              <td>{{issue.subject}}</td>
+              <td>{{issue.description|truncatewords:10}}</td>
+            </tr>
+          {% empty %}
+          <td colspan="3">Нет заявок</td>
+          {% endfor %}
+        </table>
+      </div>
+      <div id="menu3" class="tab-pane fade">
+        <h3>Menu 2</h3>
+        <p>Some content in menu 2.</p>
+      </div>
+      <!-- COMMENTS -->
+      <div id="comments" class="tab-pane fade">
+        <h3>Комментарии</h3>
+        <p>Some content in menu 2.</p>
+      </div>
+    </div>
+  </div>
+</div>
