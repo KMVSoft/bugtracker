@@ -5,17 +5,19 @@
 {% endblock%}
 {% block content %}
   <div class="container">
+  <!-- ISSUE DETAIL -->
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
         {% include 'bugtracker_app/issue_detail/issue.html'%}
       </div>
-    </div><!--end row -->
+    </div>
 
+  <!-- ISSUE COMMENTS -->
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
         {% include 'bugtracker_app/issue_detail/comments.html'%}
       </div>
-    </div><!--end row -->
+    </div>
   </div>
 {% endblock %}
 

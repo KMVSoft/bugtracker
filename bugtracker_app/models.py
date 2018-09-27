@@ -130,6 +130,10 @@ class Setting(SingletonModel):
         default=720,
         help_text='Как часто будет происходить синхронизация с redmine'
     )
+    note_from_issue_author = models.TextField(
+        default=mdv.note_from_issue_author,
+        help_text='Заголовок комментария который отобразится в redmine'
+    )
 
     #EMAIL SETTINGS 
     smtp_email_client_host = models.CharField(default=mdv.smtp_host, max_length=200)

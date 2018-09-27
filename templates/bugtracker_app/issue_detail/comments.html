@@ -32,6 +32,7 @@
         <div class="panel-heading">Добавить комментарий</div>
         <div class="panel-body">
           <form action="" method="post">
+            {% csrf_token %}
             <textarea name="comment" class="form-control" rows="5"></textarea>
             <hr>
             <button type="submit" class="btn btn-primary">Отправить</button>

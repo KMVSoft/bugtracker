@@ -17,7 +17,6 @@ from django.http import HttpResponseBadRequest
 from django.http import HttpResponseForbidden
 from django.http import HttpResponse
 
-
 from bugtracker_app.models import IssueForm
 from bugtracker_app.models import RegisterForm
 from bugtracker_app.models import Setting
@@ -78,6 +77,17 @@ class UpdateStatus(TemplateView):
 
 class IssueDetail(DetailView):
     model = Issue
+    def post(self, request, pk):
+        comment = request.POST.get('comment')
+        header = setting.note_from_issue_author
+        response = redmine.create_note(pk, header+comment)
+        if response.status_code == 200:
+            IssueComment.objects.create(
+                content=comment,
+                from_username=request.user.username,
+                issue=self.get_object() 
+                )
+        return self.get(request, pk)
 
 class ProfileView(LoginRequiredMixin, DetailView):
     model = User
@@ -115,6 +125,8 @@ class NoteAPI(CSRFExemptMixin, View):
                 content='Error when processing creation comment '+str(e)
             )
         return HttpResponse('OK')
+
+
 
 class RegisterView(TemplateView):
     template_name = 'registration/register.html'

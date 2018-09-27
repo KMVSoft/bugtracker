@@ -31,6 +31,17 @@ def create_issue(project_id:str,
             )
     return r.json()
 
+def create_note(issue_id:int, note:str):
+    r = requests.put(
+            setting.redmine_url+'/issues/%d.json' % issue_id,
+            json={
+            'issue': {
+                'notes': note
+                }
+            },
+            params={'key':setting.redmine_api_access_key}
+        )
+    return r
 
 def get_issues_list():
 	r = requests.get(
