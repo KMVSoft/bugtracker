@@ -1,0 +1,16 @@
+<table class="table table-striped table-hover">
+  <thead>
+    <td>ID</td>
+    <td>Тема</td>
+    <td>Описание</td>
+  </thead>
+  {% for issue in solved %}
+    <tr class="success" onclick="window.location='{{issue.get_absolute_url}}';">
+      <td>{{issue.id}}</td>
+      <td>{{issue.subject}}</td>
+      <td>{{issue.description|truncatewords:10}}</td>
+    </tr>
+  {% empty %}
+  <td colspan="3">Нет заявок</td>
+  {% endfor %}
+</table>

@@ -1,0 +1,27 @@
+<hr>
+{% for comment in comments %}
+
+<div class="panel panel-default" 
+onclick="window.location='{{comment.issue.get_absolute_url}}#comment{{comment.id}}';">
+  <div class="panel-heading">#{{comment.issue.id}} <b>{{comment.issue.subject}}</b></div>
+  <div class="panel-body">
+    {{comment.content}}
+  </div>
+  <div class="panel-footer">
+
+    <b> {{ comment.from_username }} </b>
+    {% if comment.is_staff %}
+      <i>комментарий службы поддержки</i>
+    {% endif %}
+    <div class="label label-default">
+      {{ comment.created_date }}
+    </div>
+  </div>
+</div>
+ 
+{% empty %}
+<div class="well">
+  у вас нет комментариев
+</div>
+{% endfor %}
+

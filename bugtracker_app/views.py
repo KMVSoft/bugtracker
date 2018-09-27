@@ -86,6 +86,8 @@ class ProfileView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['page_profile'] = 'active' #css class for BS 3 navbar
+        ctx['comments'] = IssueComment.objects.filter(
+            issue__author=self.request.user)
         # FIXIT HARDCODING status__name
         ctx['new'] = Issue.objects.filter(
             status__name='новая',

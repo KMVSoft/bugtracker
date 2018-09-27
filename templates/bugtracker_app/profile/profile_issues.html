@@ -12,60 +12,15 @@
     <div class="tab-content">
       <!-- NEW ISSUE  -->
       <div id="new" class="tab-pane fade in active">
-        <table class="table table-hover">
-          <thead class="info">
-            <td>ID</td>
-            <td>Тема</td>
-            <td>Описание</td>
-          </thead>
-          {% for issue in new %}
-            <tr class="info" onclick="window.location='{{issue.get_absolute_url}}';">
-              <td>{{issue.id}}</td>
-              <td>{{issue.subject}}</td>
-              <td>{{issue.description|truncatewords:10}}</td>
-            </tr>
-          {% empty %}
-          <td colspan="3">Нет заявок</td>
-          {% endfor %}
-        </table>
+        {% include 'bugtracker_app/profile/new.html' %}
       </div>
       <!-- IN_PROGRESS ISSUE  -->
       <div id="in_progress" class="tab-pane fade">
-        <table class="table table-striped table-hover">
-          <thead>
-            <td>ID</td>
-            <td>Тема</td>
-            <td>Описание</td>
-          </thead>
-          {% for issue in in_progress %}
-            <tr class="warning" onclick="window.location='{{issue.get_absolute_url}}';">
-              <td>{{issue.id}}</td>
-              <td>{{issue.subject}}</td>
-              <td>{{issue.description|truncatewords:10}}</td>
-            </tr>
-          {% empty %}
-          <td colspan="3">Нет заявок</td>
-          {% endfor %}
-        </table>
+        {% include 'bugtracker_app/profile/in_progress.html' %}
       </div>
       <!-- SOLVED ISSUE -->
       <div id="solved" class="tab-pane fade">
-        <table class="table table-striped table-hover">
-          <thead>
-            <td>ID</td>
-            <td>Тема</td>
-            <td>Описание</td>
-          </thead>
-          {% for issue in solved %}
-            <tr class="success" onclick="window.location='{{issue.get_absolute_url}}';">
-              <td>{{issue.id}}</td>
-              <td>{{issue.subject}}</td>
-              <td>{{issue.description|truncatewords:10}}</td>
-            </tr>
-          {% empty %}
-          <td colspan="3">Нет заявок</td>
-          {% endfor %}
-        </table>
+        {% include 'bugtracker_app/profile/solved.html' %}
       </div>
       <div id="menu3" class="tab-pane fade">
         <h3>Menu 2</h3>
@@ -73,8 +28,7 @@
       </div>
       <!-- COMMENTS -->
       <div id="comments" class="tab-pane fade">
-        <h3>Комментарии</h3>
-        <p>Some content in menu 2.</p>
+        {% include 'bugtracker_app/profile/comments.html' %}
       </div>
     </div>
   </div>

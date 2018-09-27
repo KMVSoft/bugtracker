@@ -1,0 +1,43 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+      Обсуждение
+    </div>
+    <div class="panel-body">
+
+      <!-- COMMENTS LIST -->
+
+      {% for comment in issue.comments.all%}
+        <div id="comment{{comment.id}}" class="panel panel-default">
+          <div class="panel-body">
+            {{ comment.content }}
+          </div>
+          <div class="panel-footer">
+
+            <b> {{ comment.from_username }} </b>
+            {% if comment.is_staff %}
+              <i>комментарий службы поддержки</i>
+            {% endif %}
+            <div class="label label-default">
+              {{ comment.created_date }}
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="well">Комментариев нет</div>
+      {% endfor %}
+
+      <!-- ADD NEW COMMENT -->
+
+      <div class="panel panel-primary">
+        <div class="panel-heading">Добавить комментарий</div>
+        <div class="panel-body">
+          <form action="" method="post">
+            <textarea name="comment" class="form-control" rows="5"></textarea>
+            <hr>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+</div> 
