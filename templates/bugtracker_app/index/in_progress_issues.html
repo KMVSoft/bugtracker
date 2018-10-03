@@ -18,6 +18,10 @@
           <td>{{issue.subject}}</td>
           <td>{{issue.description}}</td>
         </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3">Нет заявок в работе</td>
+        </tr>
         {%endfor%}  
       </tbody>
     </table>
