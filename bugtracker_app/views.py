@@ -132,6 +132,9 @@ class ProfileView(LoginRequiredMixin, DetailView):
         ctx['solved'] = Issue.objects.filter(
             status__name='решена',
             author=self.get_object())
+        ctx['refused'] = Issue.objects.filter(
+            status__name='отклонена',
+            author=self.get_object())
         return ctx
 
 class NoteAPI(CSRFExemptMixin, View):

@@ -5,27 +5,27 @@
       <li class="active"><a data-toggle="tab" href="#new">Новые</a></li>
       <li><a data-toggle="tab" href="#in_progress">В работе</a></li>
       <li><a data-toggle="tab" href="#solved">Решённые</a></li>
-      <li><a data-toggle="tab" href="#menu3">Отклоннёные</a></li>
+      <li><a data-toggle="tab" href="#refused">Отклоннёные</a></li>
       <li><a data-toggle="tab" href="#comments">Комментарии</a></li>
       <!-- <li><a data-toggle="tab" href="#comments">Мои комментарии</a></li> -->
     </ul>
 
     <div class="tab-content">
-      <!-- NEW ISSUE  -->
+      <!-- NEW ISSUES  -->
       <div id="new" class="tab-pane fade in active">
         {% include 'bugtracker_app/profile/new.html' %}
       </div>
-      <!-- IN_PROGRESS ISSUE  -->
+      <!-- IN_PROGRESS ISSUES  -->
       <div id="in_progress" class="tab-pane fade">
         {% include 'bugtracker_app/profile/in_progress.html' %}
       </div>
-      <!-- SOLVED ISSUE -->
+      <!-- SOLVED ISSUES -->
       <div id="solved" class="tab-pane fade">
         {% include 'bugtracker_app/profile/solved.html' %}
       </div>
-      <div id="menu3" class="tab-pane fade">
-        <h3>Menu 2</h3>
-        <p>Some content in menu 2.</p>
+      <!-- REFUSED ISSUES -->
+      <div id="refused" class="tab-pane fade">
+        {% include 'bugtracker_app/profile/refused.html' %}
       </div>
       <!-- COMMENTS -->
       <div id="comments" class="tab-pane fade">
