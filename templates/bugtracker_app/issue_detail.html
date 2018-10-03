@@ -3,6 +3,11 @@
 {% block title%}
   #{{issue.id}} {{issue.subject}}
 {% endblock%}
+
+{% block js %}
+<script src="https://raw.githubusercontent.com/stewartlord/identicon.js/master/identicon.js"></script>
+{% endblock %}
+
 {% block content %}
   <div class="container">
   <!-- ISSUE DETAIL -->

@@ -1,0 +1,19 @@
+{% extends 'bugtracker_app/base.html'%}
+{% block title %}
+Ошибка :(
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Во время отправки произошла ошибка :(</h4>
+        <p>Наши специалиcты уже знают о ней и работают над её исправлением. Попробойте отправить заявку чуть позже.</p>
+        <hr>
+        <a href="{% url 'bugtracker:index'%}" class="btn btn-danger">Вернуться на главную</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

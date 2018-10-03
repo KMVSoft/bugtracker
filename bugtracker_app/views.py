@@ -39,17 +39,24 @@ class Index(TemplateView):
 
     def post(self, request):
         form = IssueForm(request.POST)
-        if form.is_valid():
-            issue = form.save(commit=False)
-            if request.user.is_authenticated:
-                issue.author_name = request.user.first_name
-                issue.author_email = request.user.email
-                issue.author = request.user
+        if not form.is_valid():
+            return self.get(request)
 
+        issue = form.save(commit=False)
+        if request.user.is_authenticated:
+            issue.set_author(request.user)
+
+        try:
             r = redmine.create_issue(issue)
             issue.id = r['issue']['id']
             issue.save()
-            return self.get(request)
+        except Exception as e:
+            email_utils.send_error_after_report_notify(request.user, e)
+            return redirect('bugtracker:error_after_report')
+        else:  
+            request.session['report_issue_id'] = issue.id
+            return redirect('bugtracker:thanks_for_report')
+            
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -60,6 +67,25 @@ class Index(TemplateView):
         ctx['solved'] = Issue.objects.filter(status__name='решена')
         return ctx
 
+class ThanksForReporteView(TemplateView):
+    template_name = APP_NAME + '/alerts/thanks_for_report.html'
+
+    def get(self, request):
+        page = super().get(request)
+        if request.session.get('report_issue_id'):
+            self.request.session.pop('report_issue_id')
+            return page
+        else:
+            return redirect('bugtracker:index')
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['report_issue_id'] = self.request.session.get('report_issue_id', None)
+        return ctx
+
+class ErrorAfterReportView(TemplateView):
+    template_name = APP_NAME + '/alerts/error_after_report.html'
+
 class UpdateStatus(TemplateView):
     template_name = APP_NAME+'/update_status.html'
 
@@ -69,16 +95,20 @@ class UpdateStatus(TemplateView):
 
 class IssueDetail(DetailView):
     model = Issue
+    # Add new comment
     def post(self, request, pk):
-        comment = request.POST.get('comment')
+        comment_content = request.POST.get('comment')
         header = setting.note_from_issue_author
-        response = redmine.create_note(pk, header+comment)
+        response = redmine.create_note(pk, header+comment_content)
         if response.status_code == 200:
-            IssueComment.objects.create(
-                content=comment,
+            comment = IssueComment.objects.create(
+                content=comment_content,
                 from_username=request.user.username,
-                issue=self.get_object() 
-                )
+                issue=self.get_object(),
+                user=request.user  
+            )
+            if comment.issue.author == request.user:
+                email_utils.send_comment_notify(comment)
         return self.get(request, pk)
 
 class ProfileView(LoginRequiredMixin, DetailView):
@@ -89,16 +119,19 @@ class ProfileView(LoginRequiredMixin, DetailView):
         ctx = super().get_context_data(**kwargs)
         ctx['page_profile'] = 'active' #css class for BS 3 navbar
         ctx['comments'] = IssueComment.objects.filter(
-            issue__author=self.request.user)
+            issue__author=self.get_object()).exclude(
+            user=self.get_object())
+        ctx['my_comments'] = IssueComment.objects.filter(
+            user=self.get_object())
         # FIXIT HARDCODING status__name
         ctx['new'] = Issue.objects.filter(
             status__name='новая',
-            author=self.request.user)
+            author=self.get_object())
         ctx['in_progress'] = Issue.objects.filter(
             status__name='в работе')
         ctx['solved'] = Issue.objects.filter(
             status__name='решена',
-            author=self.request.user)
+            author=self.get_object())
         return ctx
 
 class NoteAPI(CSRFExemptMixin, View):
@@ -111,7 +144,8 @@ class NoteAPI(CSRFExemptMixin, View):
 
         data = json.loads(request.body.decode('utf-8'))
         try:
-            IssueComment.objects.create(is_staff=True, **data)
+            comment = IssueComment.objects.create(is_staff=True, **data)
+            email_utils.send_comment_notify(comment)
         except Exception as e:
             return HttpResponseBadRequest(
                 content='Error when processing creation comment '+str(e)
@@ -121,15 +155,13 @@ class NoteAPI(CSRFExemptMixin, View):
 class RegisterView(TemplateView):
     template_name = 'registration/register.html'
     def post(self, request):
-        form = RegisterView(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
-            user_model = form.save()
-            user = authenticate(
-                username=user_model.username,
-                password=user_model.password
-            )
+            user = form.save()
             login(request, user)
             return redirect('bugtracker:index')
+        else:
+            return self.get(request)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -147,7 +179,6 @@ class SolvedIssuesView(ListView):
         ctx = super().get_context_data(**kwargs)
         ctx['page_solved'] = 'active' # for css class BS 3
         return ctx
-
 
 class InProgressIssuesView(ListView):
     paginate_by = 10

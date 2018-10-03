@@ -1,12 +1,15 @@
 import sys
 import re
 import smtplib
+import datetime
+
 from email.mime.text import MIMEText
 from email.header    import Header
 
 from imbox import Imbox
 
 from .models import Setting
+from django.contrib.auth.models import User
 
 setting = Setting.load()
 
@@ -66,6 +69,32 @@ def send_email(subject:str, body:str, to_email:str):
     smtp.quit()
     return result
     
+def send_comment_notify(comment):
+    if comment.issue.notify_by_email:
+        send_email(
+            'Новый комментарий',
+            setting.comment_mail_template.format(
+                    issue_url=comment.issue.get_absolute_url(),
+                    user_name=comment.issue.author_name,
+                    company_name=setting.company_name,
+                    comment_content=comment.content
+            ),
+            comment.issue.author_email
+        )
+
+def send_error_after_report_notify(user, err_msg):
+    content = setting.error_after_report_template.format(
+        user_id=user.id if user else 'anonym',
+        time=datetime.datetime.now(),
+        error_message=err_msg
+    )
+    # send content all admins
+    for admin in User.objects.filter(is_staff=True):
+        send_email(
+            '!!! Ошибка на сайте',
+            content,
+            admin.email
+        )
 
 def logout():
     imap.logout()

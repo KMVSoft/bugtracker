@@ -9,6 +9,8 @@ from .views import NoteAPI
 from .views import ProfileView
 from .views import SolvedIssuesView
 from .views import InProgressIssuesView
+from .views import ThanksForReporteView
+from .views import ErrorAfterReportView
 
 app_name ='bugtracker'
 
@@ -21,4 +23,6 @@ urlpatterns = [
     path('profile/<int:pk>', ProfileView.as_view(), name='profile'),
     path('solved_issues/', SolvedIssuesView.as_view(), name='solved_issues'),
     path('in_progress_issues/', InProgressIssuesView.as_view(), name='in_progress_issues'),
+    path('thanks/', ThanksForReporteView.as_view(), name='thanks_for_report'),
+    path('error_after_report/', ErrorAfterReportView.as_view(), name='error_after_report'),
 ]

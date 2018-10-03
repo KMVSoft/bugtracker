@@ -103,6 +103,10 @@ class Issue(models.Model):
     def get_absolute_url(self):
         return reverse('bugtracker:issue_detail', args=(self.id,))
 
+    def set_author(self, user):
+        self.author_name = user.first_name
+        self.author_email = user.email
+        self.author = user
 
 class IssueComment(models.Model):
     content = models.TextField()
@@ -110,6 +114,12 @@ class IssueComment(models.Model):
     is_staff = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
     # FK
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name="comments",
+        null=True, blank=True 
+    )
     issue = models.ForeignKey(
         Issue,
         on_delete=models.PROTECT,
@@ -118,8 +128,6 @@ class IssueComment(models.Model):
 
     def __str__(self):
         return 'From: %s Content: %s' % (self.from_username, self.content)
-
-
 
 class Setting(SingletonModel):
     #REDMINE SETTINGS 
@@ -130,9 +138,20 @@ class Setting(SingletonModel):
         default=720,
         help_text='Как часто будет происходить синхронизация с redmine'
     )
+
+    # TEMPLATES
     note_from_issue_author = models.TextField(
         default=mdv.note_from_issue_author,
         help_text='Заголовок комментария который отобразится в redmine'
+    )
+    comment_mail_template = models.TextField(
+        default=mdv.comment_mail_template,
+        help_text='Этот шаблон отправится клиенту на email, когда ему будет оставлен комментарий.'
+    )
+    error_after_report_template = models.TextField(
+        default=mdv.error_after_report_template,
+        help_text='''Этот шаблон отправится админу на email, 
+        если на сайте произойдёт ошибка отправки заявки.'''
     )
 
     #EMAIL SETTINGS 
@@ -143,7 +162,9 @@ class Setting(SingletonModel):
     email_login = models.CharField(max_length=255)
     email_password = models.CharField(max_length=255)
 
+    #SELF SETTING
     api_key = models.UUIDField(default=uuid.uuid4, blank=False)
+    company_name = models.CharField(default='', max_length=50)
 
     def __str__(self):
         return 'Setting'

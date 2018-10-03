@@ -21,8 +21,8 @@ def css_by_issue_status(issue_status):
         css_class = 'danger'
     elif issue_status == 'в работе':
         css_class = 'warning'
-    elif issue_status == 'но':
-        css_class = 'success'
+    elif issue_status == 'новая':
+        css_class = 'info'
     elif issue_status == 'решена':
         css_class = 'success'
     return css_class

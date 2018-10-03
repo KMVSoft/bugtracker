@@ -31,16 +31,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django_cron',
-    'rest_framework',
-
-    'bugtracker_app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_cron',
+    'haystack',
+
+    'bugtracker_app',
 ]
 
 MIDDLEWARE = [
@@ -138,6 +139,13 @@ CRON_CLASSES = [
     "bugtracker_app.periodic_tasks.Test",
     # ...
 ]
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
 
 LOGOUT_REDIRECT_URL = 'bugtracker:index'
 LOGIN_REDIRECT_URL = 'bugtracker:index'
