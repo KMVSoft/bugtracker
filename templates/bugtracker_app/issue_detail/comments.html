@@ -7,51 +7,19 @@
       <!-- COMMENTS LIST -->
 
       {% for comment in issue.comments.all%}
-        <div id="comment{{comment.id}}" class="panel panel-default">
-          <div class="panel-body">
-            {{ comment.content }}
-          </div>
-          <div class="panel-footer">
-            {% if comment.user %}
-              <a href="{% url 'bugtracker:profile' comment.user.id %}">
-                <b> {{ comment.from_username }} </b>
-              </a>
-            {% else %}
-              <b> {{ comment.from_username }} </b>
-            {% endif%}
-
-            {% if comment.is_staff %}
-              <i>комментарий службы поддержки</i>
-            {% endif %}
-            <div class="label label-default">
-              {{ comment.created_date }}
-            </div>
-          </div>
-        </div>
+        {% include 'bugtracker_app/issue_detail/comment.html'%}
+        {% if reply == comment.id %}
+          {% include 'bugtracker_app/issue_detail/add_new_comment.html'%}
+        {% endif %}
       {% empty %}
         <div class="well">Комментариев нет</div>
       {% endfor %}
 
+      <hr>
+      <hr>
       <!-- ADD NEW COMMENT -->
-      {% if user.is_authenticated %}
-      <div class="panel panel-primary">
-        <div class="panel-heading">Добавить комментарий</div>
-        <div class="panel-body">
-          <form action="" method="post">
-            {% csrf_token %}
-            <textarea name="comment" class="form-control" rows="5"></textarea>
-            <hr>
-            <button type="submit" class="btn btn-primary">Отправить</button>
-          </form>
-        </div>
-      </div>
-      {% else %}
-      <div class="well">
-        Чтобы оставлять комментарии вам необходимо 
-        <a href="{% url 'login'%}?next={{request.path}}">Войти</a> или
-        <a href="{% url 'bugtracker:register'%}">Зарегистрироваться</a>
-      </div>
+      {% if reply < 0 %}
+        {% include 'bugtracker_app/issue_detail/add_new_comment.html'%}
       {% endif %}
-
     </div>
 </div> 

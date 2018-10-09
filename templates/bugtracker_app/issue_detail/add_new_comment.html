@@ -1,0 +1,23 @@
+{% if user.is_authenticated %}
+  <div class="panel panel-primary">
+    <div class="panel-heading">Добавить комментарий</div>
+    <div class="panel-body">
+      <form action="" method="post">
+        {% csrf_token %}
+        <textarea name="comment" class="form-control" rows="5"></textarea>
+        <hr>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+      </form>
+    </div>
+  </div>
+{% else %}
+  <div class="well">
+    Чтобы оставлять комментарии вам необходимо 
+    <a href="{% url 'login'%}?next={{request.path}}">Войти</a> или
+    <a href="{% url 'bugtracker:register'%}">Зарегистрироваться</a>
+  </div>
+{% endif %}
+
+
+
+

@@ -97,6 +97,11 @@ class IssueDetail(DetailView):
     model = Issue
     # Add new comment
     def post(self, request, pk):
+        reply = request.POST.get('reply', None)
+        if reply:
+            request.session['reply'] = reply
+            return self.get(request, pk)
+            
         comment_content = request.POST.get('comment')
         header = setting.note_from_issue_author
         response = redmine.create_note(pk, header+comment_content)
@@ -107,9 +112,15 @@ class IssueDetail(DetailView):
                 issue=self.get_object(),
                 user=request.user  
             )
-            if comment.issue.author == request.user:
+            if comment.issue.author != request.user:
                 email_utils.send_comment_notify(comment)
         return self.get(request, pk)
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['reply'] = int(self.request.session.get('reply', -1))
+        self.request.session['reply'] = -1
+        return ctx
 
 class ProfileView(LoginRequiredMixin, DetailView):
     model = User

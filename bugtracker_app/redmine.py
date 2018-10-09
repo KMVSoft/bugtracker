@@ -67,20 +67,20 @@ def get_issues_list():
     '''Возвращает список всех задач, которые есть в redmine
     если всё прошло удачно, возвращает список задач,
     иначе вызывает исключение, вызывать в блоке try/except Exception as e'''
-	r = requests.get(
-		setting.redmine_url+'/issues.json',
-		params={'key':setting.redmine_api_access_key,
-				'assigned_to_id': 1
-		}		
-	)
-	return r.json()
+    r = requests.get(
+        setting.redmine_url+'/issues.json',
+        params={'key':setting.redmine_api_access_key,
+                'assigned_to_id': 1
+        }       
+    )
+    return r.json()
 
 def get_issue(id:int):
     '''Возвращает данные задачи из redmine по её идентификатору id
     если всё прошло удачно, возвращает данные задачи,
     иначе вызывает исключение, вызывать в блоке try/except Exception as e'''
-	r = requests.get(
-		setting.redmine_url+'/issues/%d.json' % id,
-		params={'key':setting.redmine_api_access_key}		
-	)
-	return r.json()
+    r = requests.get(
+        setting.redmine_url+'/issues/%d.json' % id,
+        params={'key':setting.redmine_api_access_key}       
+    )
+    return r.json()

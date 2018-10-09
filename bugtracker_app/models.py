@@ -61,6 +61,15 @@ class IssueImportance(models.Model):
     def __str__(self):
         return '%d - %s' % (self.priority, self.name)
 
+class IssueVersion(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=False)
+    status = models.CharField(max_length=255)
+    date = models.DateField(
+        null=True, blank=False,
+        help_text='Дата выхода версии'
+    )
+
 class Issue(models.Model):
     subject = models.CharField(max_length=50)
     description = models.TextField()
@@ -96,6 +105,11 @@ class Issue(models.Model):
         on_delete=models.PROTECT,
         default=0)
 
+    version = models.ForeignKey(
+        IssueVersion,
+        on_delete=models.PROTECT,
+        null=True, blank=True)
+
     def __str__(self):
         return 'Subject: %s Descr: %s' % (self.subject,
                                 shorten(self.description, width=128, placeholder='...'))
@@ -125,6 +139,13 @@ class IssueComment(models.Model):
         on_delete=models.PROTECT,
         related_name="comments"
     )
+
+    reply_to = models.ForeignKey(
+        'self',
+        on_delete=models.PROTECT,
+        null=True, blank=True,
+        default=None,
+        related_name='replies')
 
     def __str__(self):
         return 'From: %s Content: %s' % (self.from_username, self.content)
