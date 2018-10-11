@@ -34,4 +34,4 @@ local_settings.py
 
 .env
 #database sqlite
-*.sqlite3
+#*.sqlite3
